@@ -2,11 +2,16 @@ import { db } from "@/lib/prisma";
 import { auth } from "@/auth";
 import { StudentAttendanceTable } from "./student-attendance-table";
 
+// Define the expected types
+interface PageProps {
+  params: {
+    courseId: string;
+  };
+}
+
 export default async function AttendanceDetailPage({
   params,
-}: {
-  params: { courseId: string };
-}) {
+}: PageProps) {
   const session = await auth();
   const courseId = params.courseId;
 
