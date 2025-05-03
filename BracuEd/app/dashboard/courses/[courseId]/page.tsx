@@ -20,7 +20,11 @@ export default async function CourseIdPage({
     include: {
       submissions: {
         include: {
-          student: true,
+          student: {
+            select: {
+              name: true,
+            },
+          },
         },
       },
       course: true,

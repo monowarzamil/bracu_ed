@@ -28,13 +28,19 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { enrollCourseAction } from "./actions";
 import { toast } from "sonner";
-type CourseWithFaculty = Course & {
+
+type CourseWithBasicFaculty = Course & {
+  faculty: Pick<Profile, "name">;
+};
+
+type CourseWithFacultyAndEnrollments = Course & {
   faculty: Pick<Profile, "name">;
   Enrollment: Enrollment[];
 };
+
 interface StudentViewProps {
-  myCourses: CourseWithFaculty[];
-  availableCourses: CourseWithFaculty[];
+  myCourses: CourseWithFacultyAndEnrollments[];
+  availableCourses: CourseWithBasicFaculty[];
   role: string;
 }
 

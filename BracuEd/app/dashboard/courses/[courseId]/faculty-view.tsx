@@ -28,26 +28,29 @@ import { Textarea } from "@/components/ui/textarea";
 import { gradeSubmissionAction } from "./actions";
 import { toast } from "sonner";
 
-type AssignmentWithCourseWithSubmission = Assignment & {
-  course: Course;
-  submissions: (Submission & {
-    student: Profile;
-  })[];
+type SubmissionWithStudent = Submission & {
+  student: Pick<Profile, "name">;
 };
 
-export default function FacultyView({
-  assignments,
-}: {
+type AssignmentWithCourseWithSubmission = Assignment & {
+  course: Course;
+  submissions: SubmissionWithStudent[];
+};
+
+interface FacultyViewProps {
   assignments: AssignmentWithCourseWithSubmission[];
-}) {
-  const [submissions, setSubmissions] = useState<Submission[]>([]);
+}
+
+export default function FacultyView({ assignments }: FacultyViewProps) {
+  const [submissions, setSubmissions] = useState<SubmissionWithStudent[]>([]);
   const [selectedSubmission, setSelectedSubmission] =
-    useState<Submission | null>(null);
+    useState<SubmissionWithStudent | null>(null);
   const [gradeDetails, setGradeDetails] = useState({
     grade: 0,
     feedback: "",
   });
   const [gradeDialogOpen, setGradeDialogOpen] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const handleViewSubmissions = (assignmentId: string) => {
     const assignment = assignments.find((a) => a.id === assignmentId);
@@ -56,17 +59,18 @@ export default function FacultyView({
     }
   };
 
-  const [isPending, startTransition] = useTransition();
-
   const handleGradeSubmission = () => {
+    if (!selectedSubmission) return;
+
     startTransition(async () => {
       const result = await gradeSubmissionAction({
         feedback: gradeDetails.feedback,
         grade: gradeDetails.grade,
-        submissionId: selectedSubmission?.id || "",
+        submissionId: selectedSubmission.id,
       });
+
       if (result?.error) {
-        toast("Error message!", { description: result?.error });
+        toast("Error message!", { description: result.error });
       } else {
         toast("Success message.", { description: result?.success });
         setGradeDialogOpen(false);

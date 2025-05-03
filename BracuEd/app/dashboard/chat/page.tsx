@@ -45,20 +45,18 @@ export default function Chat() {
   }, [messages]);
 
   const handleSendMessage = async (e: React.FormEvent) => {
-    e.preventDefault(); //prevent page from refreshing
-    setLoading(true); //set loading to true
-    if (!input.trim()) return; //if input is empty, return
-    // Create a new message object for the user's input
+    e.preventDefault();
+    if (!input.trim()) return;
 
-    const userMessage: Message = { 
+    const userMessage: Message = {
       id: Date.now().toString(),
       role: "user",
       content: input,
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]); 
-    setInput(""); 
+    setMessages((prev) => [...prev, userMessage]);
+    setInput("");
     setLoading(true);
 
     try {

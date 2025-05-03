@@ -2,24 +2,35 @@ import { auth } from "@/auth";
 import { db } from "@/lib/prisma";
 import TakeAttendanceForm from "./take-attendance-form";
 
-interface SearchParams {
-  [key: string]: string;
-}
+type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
-export default async function TakeAttendancePage({
-  searchParams,
-}: {
+export default async function TakeAttendancePage(props: {
   searchParams: SearchParams;
 }) {
-  const { date, courseId, section, time } = searchParams;
+  const searchParams = await props.searchParams;
+
+  const date =
+    typeof searchParams.date === "string" ? searchParams.date : undefined;
+  const courseId =
+    typeof searchParams.courseId === "string"
+      ? searchParams.courseId
+      : undefined;
+  const section =
+    typeof searchParams.section === "string" ? searchParams.section : undefined;
+  const time =
+    typeof searchParams.time === "string" ? searchParams.time : undefined;
+
+  if (!date || !courseId || !section || !time) {
+    return <div>Missing required parameters</div>;
+  }
 
   const session = await auth();
 
   const course = await db.course.findFirst({
     where: {
-      id: courseId,
+      id: courseId as string,
       facultyId: session?.user.id,
-      section: section,
+      section: section as string,
     },
     include: {
       faculty: true,

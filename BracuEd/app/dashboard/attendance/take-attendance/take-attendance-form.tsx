@@ -132,7 +132,7 @@ export default function TakeAttendanceForm({
             <div>
               <p className="text-sm font-medium mb-1">Time Schedule</p>
               <p className="text-lg">
-                {timeSchedule?.replace("-", " - ")}
+                {timeSchedule?.replace("-", " - ").toUpperCase()}
               </p>
             </div>
           </div>

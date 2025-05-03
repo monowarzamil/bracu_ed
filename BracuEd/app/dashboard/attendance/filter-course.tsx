@@ -22,12 +22,12 @@ import { useRouter } from "next/navigation";
 
 export default function FilterCourse({ courses }: { courses: Course[] }) {
   const timeSchedules = [
-    { value: "8:00-9:20", label: "8:00 AM - 9:20 AM" },
-    { value: "9:30-10:50", label: "9:30 AM - 10:50 AM" },
-    { value: "11:00-12:20", label: "11:00 AM - 12:20 PM" },
-    { value: "12:30-2:00", label: "12:30 PM - 2:00 PM" },
-    { value: "2:00-3:20", label: "2:00 PM - 3:20 PM" },
-    { value: "3:30-4:50", label: "3:30 PM - 4:50 PM" },
+    { value: "8:00-9:30", label: "8:00 AM - 9:30 AM" },
+    { value: "9:45-11:15", label: "9:45 AM - 11:15 AM" },
+    { value: "11:30-1:00", label: "11:30 AM - 1:00 PM" },
+    { value: "2:00-3:30", label: "2:00 PM - 3:30 PM" },
+    { value: "3:45-5:15", label: "3:45 PM - 5:15 PM" },
+    { value: "5:30-7:00", label: "5:30 PM - 7:00 PM" },
   ];
 
   const [date, setDate] = useState<Date | undefined>(undefined);

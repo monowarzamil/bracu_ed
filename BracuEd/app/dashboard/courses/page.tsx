@@ -39,6 +39,11 @@ export default async function CoursesPage() {
           name: true,
         },
       },
+      Enrollment: {
+        where: {
+          studentId: session.user.id,
+        },
+      },
     },
   });
   const availableCourses = await db.course.findMany({
